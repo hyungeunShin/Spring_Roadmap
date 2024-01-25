@@ -37,7 +37,7 @@ public class MemberServiceTest {
 		
 		//then
 		Member result = memberService.findOne(saveId).get();
-		assertEquals(result.getName(), member.getName());
+		assertEquals(member.getName(), result.getName());
 	}
 	
 	@Test
@@ -53,14 +53,14 @@ public class MemberServiceTest {
 		IllegalStateException e = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
 		//assertThrows(NullPointerException.class, () -> memberService.join(member2));
 		
-		assertEquals(e.getMessage(), "이미 존재하는 회원입니다.");
+		assertEquals("이미 존재하는 회원입니다.", e.getMessage());
 		
 		/*
 		try {
 			memberService.join(member2);
 			fail("예외가 발생해야 한다.");
 		} catch (IllegalStateException e) {
-			assertEquals(e.getMessage(), "이미 존재하는 회원입니다.");
+			assertEquals("이미 존재하는 회원입니다.", e.getMessage());
 		}
 		*/
 	}
