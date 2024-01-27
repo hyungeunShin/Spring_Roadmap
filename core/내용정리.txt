@@ -311,3 +311,12 @@ Bean : class hello.core.AppConfig$$SpringCGLIB$$0 에서 보듯이
 		- 구분자를 직접 정하다 보니까 구분자가 틀려도 컴파일시 체크가 안됨.
 	- @Primary 사용	
 		- 여러개의 빈이 매칭되면 @Primary가 우선권을 가진다.
+		
+※ 모든 빈을 조회 할 때 
+	★★★ AllBeanTest.java
+	- Map<String, DiscountPolicy> : map의 키에 스프링 빈의 이름을 넣어주고, 그 값으로 DiscountPolicy 타입으로 조회한 모든 스프링 빈을 담아준다.
+	- List<DiscountPolicy> : DiscountPolicy 타입으로 조회한 모든 스프링 빈을 담아준다.
+	- 만약 해당하는 타입의 스프링 빈이 없으면, 빈 컬렉션이나 Map을 주입한다.
+	
+★ 참고 : 스프링 컨테이너는 생성자에 클래스 정보를 받는다. 여기에 클래스 정보를 넘기면 해당 클래스가 스프링 빈으로 자동 등록된다.
+  ex) new AnnotationConfigApplicationContext(AutoAppConfig.class, DiscountService.class);
