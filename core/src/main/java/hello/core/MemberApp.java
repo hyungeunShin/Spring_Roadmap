@@ -8,6 +8,7 @@ import hello.core.member.Member;
 import hello.core.member.MemberService;
 
 public class MemberApp {
+	/*
 	public static void main(String[] args) {
 		//OSP, DIP 안지켜짐
 		//MemberService memberService = new MemberServiceImpl();
@@ -26,4 +27,5 @@ public class MemberApp {
 		System.out.println("member : " + member.toString());
 		System.out.println("findMember : " + findMember.toString());
 	}
+	*/
 }

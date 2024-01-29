@@ -10,6 +10,7 @@ import hello.core.order.Order;
 import hello.core.order.OrderService;
 
 public class OrderApp {
+	/*
 	public static void main(String[] args) {
 		//MemberService memberService = new MemberServiceImpl();
 		//OrderService orderService = new OrderServiceImpl();
@@ -32,4 +33,5 @@ public class OrderApp {
 		System.out.println("Order : " + order);
 		System.out.println("Order.calculatePrice : " + order.calculatePrice());
 	}
+	*/
 }
