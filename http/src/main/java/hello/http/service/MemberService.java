@@ -1,6 +1,7 @@
 package hello.http.service;
 
 import java.util.List;
+import java.util.Map;
 
 import hello.http.domain.Member;
 
@@ -9,9 +10,11 @@ public interface MemberService {
 	
 	public Member findOne(Long memberId) throws Exception;
 	
-	public Long join(Member member);
+	public Member join(Member member) throws Exception;
 	
-	public Member update(Member member);
+	public Map<String, Object> overwrite(Member member);
 	
-	public void delete(Long id);
+	public Member update(Member member) throws Exception;
+	
+	public Member delete(Long id) throws Exception;
 }

@@ -14,8 +14,6 @@ import hello.http.domain.Member;
 public class MemberRepositoryImpl implements MemberRepository {
 	private static Map<Long, Member> store = new HashMap<>();
 	
-	private static long sequence = 0L;
-	
 	@Override
 	public List<Member> findAll() {
 		return new ArrayList<>(store.values());
@@ -28,21 +26,23 @@ public class MemberRepositoryImpl implements MemberRepository {
 	
 	@Override
 	public Member save(Member member) {
-		member.setId(++sequence);
+		store.put(member.getId(), member);
+		return member;
+	}
+	
+	@Override
+	public Member update(Member member) {
+		Member target = store.get(member.getId());
+		member.setName(member.getName() == null ? target.getName() : member.getName());
+		member.setAge(member.getAge() == null ? target.getAge() : member.getAge());
 		store.put(member.getId(), member);
 		return member;
 	}
 
 	@Override
-	public Member update(Member member) {
-		Member updateMember = store.get(member.getId());
-		updateMember.setName(member.getName());
-		store.put(member.getId(), updateMember);
-		return updateMember;
-	}
-
-	@Override
-	public void delete(Long id) {
+	public Member delete(Long id) {
+		Member member = store.get(id);
 		store.remove(id);
+		return member;
 	}
 }
