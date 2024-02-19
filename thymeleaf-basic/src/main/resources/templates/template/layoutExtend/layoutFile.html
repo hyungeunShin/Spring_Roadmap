@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:replace="${title}">레이아웃 타이틀</title>
+</head>
+<body>
+	<h1>레이아웃 H1</h1>
+	<div th:replace="${content}">
+		<p>레이아웃 컨텐츠</p>
+	</div>
+	<footer>
+		레이아웃 푸터
+	</footer>
+</body>
+</html>
+<!--
+https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html#appendix-c-markup-selector-syntax
+특정 부분만 가능
+-->
+
+<!--결과-->
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+	<title>메인 페이지 타이틀</title>
+</head>
+<body>
+	<h1>레이아웃 H1</h1>
+	<section>
+		<p>메인 페이지 컨텐츠</p>
+		<div>메인 페이지 포함 내용</div>
+	</section>
+	<footer>
+		레이아웃 푸터
+	</footer>
+</body>
+</html>
+-->

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		ul {
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<h1>리터럴</h1>
+	<ul>
+		<!--타임리프에서 문자 리터럴은 항상 ' (작은 따옴표)로 감싸야 한다.
+		<span th:text="'hello'">
+		그런데 문자를 항상 ' 로 감싸는 것은 너무 귀찮은 일이다. 공백 없이 쭉 이어진다면 하나의 의미있는 토큰으로 인지해서 다음과 같이 작은 따옴표를 생략할 수 있다.--> 
+		<!-- <li>"hello world!" = <span th:text="hello world!"></span></li>-->
+		<li>'hello world!' = <span th:text="'hello world!'"></span></li>
+		<li>'hello ' + 'world!' = <span th:text="'hello' + ' world!'"></span></li>
+		<li>'hello ' + ${data} = <span th:text="'hello ' + ${data}"></span></li>
+		<li>리터럴 대체 |hello ${data}| = <span th:text="|hello ${data}|"></span></li>
+	</ul>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<!-- 자바스크립트 인라인 사용 전 -->
+	<script>
+		var username = [[${user.username}]];
+		var age = [[${user.age}]];
+		//자바스크립트 내추럴 템플릿
+		var username2 = /*[[${user.username}]]*/ "test username";
+		//객체
+		var user = [[${user}]];
+	</script>
+	
+	<!-- 자바스크립트 인라인 사용 후 -->
+	<script th:inline="javascript">
+		var username = [[${user.username}]];
+		var age = [[${user.age}]];
+		//자바스크립트 내추럴 템플릿
+		var username2 = /*[[${user.username}]]*/ "test username";
+		//객체
+		var user = [[${user}]];
+	</script>
+	
+	<script th:inline="javascript">
+	 	[# th:each="user, stat : ${users}"]
+	 		var user[[${stat.count}]] = [[${user}]];
+	 	[/]
+	</script>
+	
+	<!--
+	<script>
+		var username = userA;
+		var age = 10;
+		//자바스크립트 내추럴 템플릿
+		var username2 = /*userA*/ "test username";
+		//객체
+		var user = BasicController.User(username=userA, age=10);
+	</script>
+	
+	<script>
+		자바스크립트에서 문제가 될 수 있는 문자가 포함되어 있으면 이스케이프 처리도 해준다.
+		var username = "userA";
+		
+		var age = 10;
+		//자바스크립트 내추럴 템플릿
+		var username2 = "userA";
+		//객체
+		var user = {"username":"userA","age":10};
+	</script>
+	
+	<script>
+ 		var user1 = {"username":"UserA","age":10};
+ 		var user2 = {"username":"UserB","age":20};
+ 		var user3 = {"username":"UserC","age":30};
+	</script>
+	-->
+	
+</body>
+</html>

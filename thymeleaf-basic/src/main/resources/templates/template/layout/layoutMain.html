@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--
+common_header(~{::title},~{::link}) 이 부분이 핵심이다.
+	::title은 현재 페이지의 title 태그들을 전달한다.
+	::link는 현재 페이지의 link 태그들을 전달한다.
+-->
+<head th:replace="template/layout/base :: common_header(~{::title},~{::link})">
+	<title>메인 타이틀</title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/themes/smoothness/jquery-ui.css}">
+</head>
+<!--결과-->
+<!--
+<head>
+	<title>메인 타이틀</title>
+	
+	 공통 
+	<link rel="stylesheet" type="text/css" media="all" href="/css/awesomeapp.css">
+	<link rel="shortcut icon" href="/images/favicon.ico">
+	<script type="text/javascript" src="/sh/scripts/codebase.js"></script>
+	
+	 추가 
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/themes/smoothness/jquery-ui.css">
+</head>
+-->
+<body>
+
+</body>
+</html>
