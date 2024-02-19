@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<link th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+		tr {
+			align-items: center;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="container" style="max-width: 800px">
+		<div class="py-5 text-center">
+			<h2>상품 목록</h2>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<button class="btn btn-primary float-end" th:onclick="|location.href='@{/form/items/add}'|" onclick="location.href='addForm.html'" type="button">
+					상품 등록
+				</button>
+			</div>
+		</div>
+		
+		<hr class="my-4">
+		
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>상품명</th>
+						<th>가격</th>
+						<th>수량</th>
+						<!--<th>판매여부</th>
+						<th>판매지역</th>
+						<th>상품종류</th>
+						<th>배송방식</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${items}">
+						<td><a href="item.html" th:href="@{/form/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">상품아이디</a></td>
+						<td><a href="item.html" th:href="@{|/form/items/${item.id}|}" th:text="${item.itemName}">상품명</a></td>
+						<td th:text="${item.price}">10000</td>
+						<td th:text="${item.quantity}">10</td>
+						<!--<td><input type="checkbox" th:checked="${item.open == true}" disabled></td>
+						<td th:text="${item.regions}"></td>
+						<td th:text="${item.itemType.description}"></td>
+						<td th:text="${item.deliveryCode}"></td>-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+</body>
+</html>
