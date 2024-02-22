@@ -90,4 +90,13 @@ public class BasicItemController {
 		//컨트롤러에 매핑된 @PathVariable의 값은 redirect에도 사용 가능
 		return "redirect:/basic/items/{itemId}";
 	}
+	
+	//테스트용 데이터
+	/*
+	@PostConstruct
+	public void init() {
+		itemRepository.save(new Item("itemA", 10000, 10));
+		itemRepository.save(new Item("itemB", 20000, 20));
+	}
+	*/
 }

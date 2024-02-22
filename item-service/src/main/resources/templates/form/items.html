@@ -34,10 +34,10 @@
 						<th>상품명</th>
 						<th>가격</th>
 						<th>수량</th>
-						<!--<th>판매여부</th>
+						<th>판매여부</th>
 						<th>판매지역</th>
 						<th>상품종류</th>
-						<th>배송방식</th>-->
+						<th>배송방식</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -46,10 +46,10 @@
 						<td><a href="item.html" th:href="@{|/form/items/${item.id}|}" th:text="${item.itemName}">상품명</a></td>
 						<td th:text="${item.price}">10000</td>
 						<td th:text="${item.quantity}">10</td>
-						<!--<td><input type="checkbox" th:checked="${item.open == true}" disabled></td>
+						<td><input type="checkbox" th:checked="${item.open == true}" disabled></td>
 						<td th:text="${item.regions}"></td>
 						<td th:text="${item.itemType.description}"></td>
-						<td th:text="${item.deliveryCode}"></td>-->
+						<td th:text="${item.deliveryCode}"></td>
 					</tr>
 				</tbody>
 			</table>
