@@ -5,6 +5,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import hello.itemservice.domain.login.LoginService;
 import hello.itemservice.domain.member.Member;
@@ -85,8 +86,8 @@ public class LoginController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("/login")
-	public String loginV3(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	//@PostMapping("/login")
+	public String loginV3(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
 		log.info("LoginForm = {}", form);
 		
 		if(bindingResult.hasErrors()) {
@@ -118,6 +119,30 @@ public class LoginController {
 		session.setAttribute(SessionConst.LOGIN_MEMBER, member);
 		
 		return "redirect:/";
+	}
+	
+	@PostMapping("/login")
+	public String loginV4(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult
+			, @RequestParam(value = "redirectURL", defaultValue = "/") String redirectURL
+			, HttpServletRequest request) {
+		
+		log.info("LoginForm = {}", form);
+		
+		if(bindingResult.hasErrors()) {
+			return "login/loginForm"; 
+		}
+		
+		Member member = loginService.login(form.getLoginId(), form.getPassword());
+		
+		if(member == null) {
+			bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+			return "login/loginForm";
+		}
+		
+		HttpSession session = request.getSession();
+		session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+		
+		return "redirect:" + redirectURL;
 	}
 	
 	//@PostMapping("/logout")

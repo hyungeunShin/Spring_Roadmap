@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import hello.itemservice.domain.member.Member;
 import hello.itemservice.domain.member.MemberRepository;
+import hello.itemservice.web.argumentresolver.Login;
 import hello.itemservice.web.session.SessionManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -69,8 +70,19 @@ public class HomeController {
 		return "loginHome";
 	}
 	
-	@GetMapping("/")
+	//@GetMapping("/")
 	public String homeLoginV4(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member, Model model) {
+		if(member == null) {
+			return "home";
+		}
+		
+		model.addAttribute("member", member);
+		return "loginHome";
+	}
+	
+	//ArgumentResolver 활용
+	@GetMapping("/")
+	public String homeLoginV5(@Login Member member, Model model) {
 		if(member == null) {
 			return "home";
 		}
