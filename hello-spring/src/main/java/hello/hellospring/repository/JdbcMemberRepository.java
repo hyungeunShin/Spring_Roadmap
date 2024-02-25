@@ -38,7 +38,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
 			rs = pstmt.getGeneratedKeys();
 
-			if (rs.next()) {
+			if(rs.next()) {
 				member.setId(rs.getLong(1));
 			} else {
 				throw new SQLException("id 조회 실패");
@@ -66,7 +66,7 @@ public class JdbcMemberRepository implements MemberRepository {
 			pstmt.setLong(1, id);
 			rs = pstmt.executeQuery();
 
-			if (rs.next()) {
+			if(rs.next()) {
 				Member member = new Member();
 				member.setId(rs.getLong("id"));
 				member.setName(rs.getString("name"));
@@ -95,7 +95,7 @@ public class JdbcMemberRepository implements MemberRepository {
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
 			
-			if (rs.next()) {
+			if(rs.next()) {
 				Member member = new Member();
 				member.setId(rs.getLong("id"));
 				member.setName(rs.getString("name"));
@@ -146,12 +146,9 @@ public class JdbcMemberRepository implements MemberRepository {
 
 	private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
 		try {
-			if (rs != null)
-				rs.close();
-			if (pstmt != null)
-				pstmt.close();
-			if (conn != null)
-				close(conn);
+			if(rs != null) rs.close();
+			if(pstmt != null) pstmt.close();
+			if(conn != null) close(conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
