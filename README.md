@@ -13,3 +13,4 @@
 ### 5. 스프링 MVC 2편 - 백엔드 웹 개발 핵심 기술
 >#### 5-1) [thymeleaf-basic](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/thymeleaf-basic)
 >#### 5-2) [item-service](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/item-service)
+>#### 5-3) [exception](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/exception)
