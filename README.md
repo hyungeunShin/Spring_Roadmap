@@ -16,3 +16,6 @@
 >#### 5-3) [exception](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/exception)
 >#### 5-4) [typeconverter](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/typeconverter)
 >#### 5-5) [upload](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/upload)
+
+### 6. 스프링 DB 1편 - 데이터 접근 핵심 원리
+>#### 6-1) [jdbc](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/jdbc)
