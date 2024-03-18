@@ -1,19 +1,25 @@
 package hello.jdbc.repository;
 
-import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.JdbcUtils;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 /**
- * JDBC - DriverManager 사용
+ * 트랜잭션 - 트랜잭션 메니저 활용
  */
 @Slf4j
-public class MemberRepositoryV0 {
+public class MemberRepositoryV3 /* implements MemberRepositoryEx */ {
+    private final DataSource dataSource;
+
+    public MemberRepositoryV3(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member(member_id, money) values(?, ?)";
 
@@ -31,7 +37,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
@@ -60,7 +66,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(rs, pstmt, con);
+            close(con, pstmt, rs);
         }
     }
 
@@ -81,7 +87,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
@@ -100,24 +106,25 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
-    private Connection getConnection() {
-        return DBConnectionUtil.getConnection();
+    private Connection getConnection() throws SQLException {
+        //트랜잭션 동기화를 사용하려면 DataSourceUtils 를 사용해야 한다.
+        //트랜잭션 동기화 매니저가 관리하는 커넥션이 있으면 해당 커넥션을 반환한다.
+        //트랜잭션 동기화 매니저가 관리하는 커넥션이 없는 경우 새로운 커넥션을 생성해서 반환한다.
+        Connection con = DataSourceUtils.getConnection(dataSource);
+        log.info("get connection : {}, class : {}", con, con.getClass());
+        return con;
     }
 
-    public void close(AutoCloseable... objects) {
-        Arrays.stream(objects)
-                .filter(Objects::nonNull)
-                .forEach(object -> {
-                    try {
-                        //log.info("close object : {}", object.getClass());
-                        object.close();
-                    } catch(Exception e) {
-                        log.error("ERROR", e);
-                    }
-                });
+    public void close(Connection con, Statement stmt, ResultSet rs) {
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        //트랜잭션 동기화를 사용하려면 DataSourceUtils 를 사용해야 한다.
+        //트랜잭션을 사용하기 위해 동기화된 커넥션은 커넥션을 닫지 않고 그대로 유지해준다.
+        //트랜잭션 동기화 매니저가 관리하는 커넥션이 없는 경우 해당 커넥션을 닫는다.
+        DataSourceUtils.releaseConnection(con, dataSource);
     }
 }

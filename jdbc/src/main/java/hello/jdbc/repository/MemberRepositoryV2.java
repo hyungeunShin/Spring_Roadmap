@@ -1,19 +1,24 @@
 package hello.jdbc.repository;
 
-import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.support.JdbcUtils;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 /**
- * JDBC - DriverManager 사용
+ * 트랜잭션 - 같은 Connection 을 파라미터로 전달
  */
 @Slf4j
-public class MemberRepositoryV0 {
+public class MemberRepositoryV2 {
+    private final DataSource dataSource;
+
+    public MemberRepositoryV2(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member(member_id, money) values(?, ?)";
 
@@ -31,7 +36,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
@@ -60,18 +65,44 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(rs, pstmt, con);
+            close(con, pstmt, rs);
         }
     }
 
-    public void update(String memberId, int money) throws SQLException {
+    public Member findById(Connection con, String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+
+            rs = pstmt.executeQuery();
+            if(rs.next()) {
+                Member member = new Member();
+                member.setMemberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found member_id = " + memberId);
+            }
+        } catch(SQLException e) {
+            log.error("DB ERROR", e);
+            throw e;
+        } finally {
+            JdbcUtils.closeResultSet(rs);
+            JdbcUtils.closeStatement(pstmt);
+        }
+    }
+
+    public void update(Connection con, String memberId, int money) throws SQLException {
         String sql = "update member set money = ? where member_id = ?";
 
-        Connection con = null;
         PreparedStatement pstmt = null;
 
         try {
-            con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, money);
             pstmt.setString(2, memberId);
@@ -81,7 +112,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            JdbcUtils.closeStatement(pstmt);
         }
     }
 
@@ -100,24 +131,19 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
-    private Connection getConnection() {
-        return DBConnectionUtil.getConnection();
+    private Connection getConnection() throws SQLException {
+        Connection con = dataSource.getConnection();
+        log.info("get connection : {}, class : {}", con, con.getClass());
+        return con;
     }
 
-    public void close(AutoCloseable... objects) {
-        Arrays.stream(objects)
-                .filter(Objects::nonNull)
-                .forEach(object -> {
-                    try {
-                        //log.info("close object : {}", object.getClass());
-                        object.close();
-                    } catch(Exception e) {
-                        log.error("ERROR", e);
-                    }
-                });
+    public void close(Connection con, Statement stmt, ResultSet rs) {
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        JdbcUtils.closeConnection(con);
     }
 }

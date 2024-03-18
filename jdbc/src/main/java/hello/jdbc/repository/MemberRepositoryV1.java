@@ -1,19 +1,24 @@
 package hello.jdbc.repository;
 
-import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.support.JdbcUtils;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 /**
- * JDBC - DriverManager 사용
+ * JDBC - DataSource 사용, JdbcUtils 사용
  */
 @Slf4j
-public class MemberRepositoryV0 {
+public class MemberRepositoryV1 {
+    private final DataSource dataSource;
+
+    public MemberRepositoryV1(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public Member save(Member member) throws SQLException {
         String sql = "insert into member(member_id, money) values(?, ?)";
 
@@ -31,7 +36,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
@@ -60,7 +65,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(rs, pstmt, con);
+            close(con, pstmt, rs);
         }
     }
 
@@ -81,7 +86,7 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
@@ -100,24 +105,19 @@ public class MemberRepositoryV0 {
             log.error("DB ERROR", e);
             throw e;
         } finally {
-            close(pstmt, con);
+            close(con, pstmt, null);
         }
     }
 
-    private Connection getConnection() {
-        return DBConnectionUtil.getConnection();
+    private Connection getConnection() throws SQLException {
+        Connection con = dataSource.getConnection();
+        log.info("get connection : {}, class : {}", con, con.getClass());
+        return con;
     }
 
-    public void close(AutoCloseable... objects) {
-        Arrays.stream(objects)
-                .filter(Objects::nonNull)
-                .forEach(object -> {
-                    try {
-                        //log.info("close object : {}", object.getClass());
-                        object.close();
-                    } catch(Exception e) {
-                        log.error("ERROR", e);
-                    }
-                });
+    public void close(Connection con, Statement stmt, ResultSet rs) {
+        JdbcUtils.closeResultSet(rs);
+        JdbcUtils.closeStatement(stmt);
+        JdbcUtils.closeConnection(con);
     }
 }
