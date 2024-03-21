@@ -17,8 +17,7 @@
 >#### 5-4) [typeconverter](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/typeconverter)
 >#### 5-5) [upload](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/upload)
 
-### 6. 스프링 DB 1편 - 데이터 접근 핵심 원리
->#### 6-1) [jdbc](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/jdbc)
+### 6. 스프링 DB 1편 - 데이터 접근 핵심 원리([jdbc](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/jdbc))
 
 ### 7. 스프링 DB 2편 - 데이터 접근 활용 기술
 >#### 7-1) [itemservice-db](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/itemservice-db)
