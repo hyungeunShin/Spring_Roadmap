@@ -21,3 +21,4 @@
 
 ### 7. 스프링 DB 2편 - 데이터 접근 활용 기술
 >#### 7-1) [itemservice-db](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/itemservice-db)
+>#### 7-2) [springtx](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/springtx)
