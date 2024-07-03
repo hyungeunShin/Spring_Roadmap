@@ -28,7 +28,7 @@ public class HelloTraceV1 {
     }
 
     private void complete(TraceStatus status, Exception e) {
-        Long stopTimeMs = System.currentTimeMillis();
+        long stopTimeMs = System.currentTimeMillis();
         long resultTimeMs = stopTimeMs - status.getStartTimeMs();
         TraceId traceId = status.getTraceId();
         if(e == null) {

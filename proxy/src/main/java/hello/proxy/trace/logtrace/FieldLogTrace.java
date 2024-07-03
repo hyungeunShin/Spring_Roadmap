@@ -1,21 +1,23 @@
-package hello.advanced.trace.logtrace;
+package hello.proxy.trace.logtrace;
 
-import hello.advanced.trace.TraceId;
-import hello.advanced.trace.TraceStatus;
+import hello.proxy.trace.TraceId;
+import hello.proxy.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ThreadLocalLogTrace implements LogTrace {
+public class FieldLogTrace implements LogTrace {
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
 
-    private ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>();
+    //파라미터로 넘기는게 아닌 필드로 동기화
+    //동시성 이슈 발생
+    private TraceId traceIdHolder;
 
     @Override
     public TraceStatus begin(String message) {
         syncTraceId();
-        TraceId traceId = traceIdHolder.get();
+        TraceId traceId = traceIdHolder;
         long start = System.currentTimeMillis();
         log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
         return new TraceStatus(traceId, start, message);
@@ -32,7 +34,7 @@ public class ThreadLocalLogTrace implements LogTrace {
     }
 
     private void complete(TraceStatus status, Exception e) {
-        long stopTimeMs = System.currentTimeMillis();
+        Long stopTimeMs = System.currentTimeMillis();
         long resultTimeMs = stopTimeMs - status.getStartTimeMs();
         TraceId traceId = status.getTraceId();
         if(e == null) {
@@ -53,26 +55,19 @@ public class ThreadLocalLogTrace implements LogTrace {
     }
 
     private void syncTraceId() {
-        TraceId traceId = traceIdHolder.get();
-        if(traceId == null) {
-            traceIdHolder.set(new TraceId());
+        if(traceIdHolder == null) {
+            traceIdHolder = new TraceId();
         } else {
-            traceIdHolder.set(traceId.createNextId());
+            traceIdHolder = traceIdHolder.createNextId();
         }
     }
 
     private void releaseTraceId() {
-        TraceId traceId = traceIdHolder.get();
-        if(traceId.isFirstLevel()) {
+        if(traceIdHolder.isFirstLevel()) {
             //destroy
-            /*
-            쓰레드를 생성하는 비용은 비싸기 때문에 쓰레드를 제거하지 않고 보통 쓰레드 풀을 통해서 쓰레드를 재사용한다.
-            만약 ThreadLocal 을 비워두지 않았다면 추후 다시 Thread 가 사용될 때 ThreadLocal 에 담아둔 데이터에 접근이 가능해진다.
-            그러므로 ThreadLocal 을 사용하였다면 맨 마지막에 꼭 remove 메서드를 통해 ThreadLocal 을 비워줘야 한다.
-            */
-            traceIdHolder.remove();
+            traceIdHolder = null;
         } else {
-            traceIdHolder.set(traceId.createPreviousId());
+            traceIdHolder = traceIdHolder.createPreviousId();
         }
     }
 }

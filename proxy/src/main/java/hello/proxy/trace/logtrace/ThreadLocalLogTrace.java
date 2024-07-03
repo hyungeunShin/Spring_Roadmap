@@ -1,7 +1,7 @@
-package hello.advanced.trace.logtrace;
+package hello.proxy.trace.logtrace;
 
-import hello.advanced.trace.TraceId;
-import hello.advanced.trace.TraceStatus;
+import hello.proxy.trace.TraceId;
+import hello.proxy.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,7 +32,7 @@ public class ThreadLocalLogTrace implements LogTrace {
     }
 
     private void complete(TraceStatus status, Exception e) {
-        long stopTimeMs = System.currentTimeMillis();
+        Long stopTimeMs = System.currentTimeMillis();
         long resultTimeMs = stopTimeMs - status.getStartTimeMs();
         TraceId traceId = status.getTraceId();
         if(e == null) {
