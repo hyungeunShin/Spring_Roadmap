@@ -1,0 +1,45 @@
+plugins {
+	id 'java'
+}
+
+group = 'hello'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework:spring-webmvc:6.1.10'
+
+	//톰캣 서버를 자바 코드로 실행할 수 있고 서블릿 관련 코드도 포함하고 있다.
+	implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.25'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+//일반 Jar 생성
+tasks.register('buildJar', Jar) {
+	manifest {
+		attributes 'Main-Class': 'hello.embed.EmbedTomcatSpringMain'
+	}
+	with jar
+}
+
+//Fat Jar 생성
+tasks.register('buildFatJar', Jar) {
+	manifest {
+		attributes 'Main-Class': 'hello.embed.EmbedTomcatSpringMain'
+	}
+	duplicatesStrategy = DuplicatesStrategy.WARN
+	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
+}
