@@ -31,3 +31,7 @@
 ### 9. 스프링 부트 - 핵심 원리와 활용
 >#### 9-1) [server](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/server)
 >#### 9-2) [embed](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/embed)
+>#### 9-3) [boot](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/boot)
+>#### 9-4) [lib](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/lib)
+>#### 9-5) [autoconfig](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/autoconfig)
+>#### 9-6) [memory](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/memory)
