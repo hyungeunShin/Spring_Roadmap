@@ -35,3 +35,6 @@
 >#### 9-4) [lib](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/lib)
 >#### 9-5) [autoconfig](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/autoconfig)
 >#### 9-6) [memory](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/memory)
+>#### 9-7) [external](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/external)
+>#### 9-8) [external-read](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/external-read)
+>#### 9-9) [actuator](https://github.com/hyungeunShin/Spring_Roadmap/tree/master/actuator)
